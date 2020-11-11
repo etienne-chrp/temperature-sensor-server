@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Temperature Chart</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='Chart.min.js') }}"></script>
+</head>
+
+<body>
+
+    <div>Hello world!</div>
+
+    <canvas id="temperatureChart"></canvas>
+
+    <script>
+        var timeFormat = 'MM/DD/YYYY HH:mm';
+
+        var ctx = document.getElementById("temperatureChart");
+
+        var data = [
+            { t: new moment().days(-2).minute(1), y: 1 },
+            { t: new moment().minute(2), y: 2 },
+            { t: new moment().minute(3), y: 3 },
+            { t: new moment().minute(4), y: 4 },
+            { t: new moment().minute(5), y: 3 },
+            { t: new moment().minute(60), y: 2 },
+        ]
+
+        var config = {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: "Temperature",
+                        data: data,
+                        fill: false,
+                        borderColor: 'red'
+                    },
+                    {
+                        label: "Humidity",
+                        data: data,
+                        fill: true,
+                        backgroundColor: 'blue',
+                        type: 'bar'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: "Temperature/Humidity Chart"
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                    }]
+                }
+            }
+        };
+
+        var tempChart = new Chart(ctx, config);
+    </script>
+</body>
+
+</html>
