@@ -24,21 +24,23 @@
         var ctx = document.getElementById("temperatureChart");
 
         var dataT = [
-            { t: new moment().minute(1), y: 19 },
-            { t: new moment().minute(2), y: 18.3 },
-            { t: new moment().minute(3), y: 21 },
-            { t: new moment().minute(4), y: 22.5 },
-            { t: new moment().minute(5), y: 20 },
-            { t: new moment().minute(60), y: 19.2 },
+            { t: new moment().days(0).minute(1), y: 19 },
+            { t: new moment().days(1).minute(0), y: 18.3 },
+            { t: new moment().days(1).minute(120), y: 21.6 },
+            { t: new moment().days(1).minute(240), y: 20.1 },
+            { t: new moment().days(2).minute(3), y: 21 },
+            { t: new moment().days(3).minute(4), y: 22.5 },
+            { t: new moment().days(4).minute(5), y: 20 },
+            { t: new moment().days(5).minute(60), y: 19.2 },
         ]
 
         var dataH = [
-            { t: new moment().minute(1), y: 69 },
-            { t: new moment().minute(2), y: 75 },
-            { t: new moment().minute(3), y: 78 },
-            { t: new moment().minute(4), y: 82 },
-            { t: new moment().minute(5), y: 72 },
-            { t: new moment().minute(60), y: 65 },
+            { t: new moment().days(0).minute(1), y: 69 },
+            { t: new moment().days(1).minute(2), y: 75 },
+            { t: new moment().days(2).minute(3), y: 78 },
+            { t: new moment().days(3).minute(4), y: 82 },
+            { t: new moment().days(4).minute(5), y: 72 },
+            { t: new moment().days(5).minute(60), y: 65 },
         ]
 
         var config = {
