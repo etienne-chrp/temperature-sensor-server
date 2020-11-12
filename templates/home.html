@@ -16,34 +16,50 @@
     <script>
         var timeFormat = 'MM/DD/YYYY HH:mm';
 
+        var colors = {
+            red: 'rgb(255, 99, 132)',
+            blue: 'rgb(54, 162, 235)'
+        };
+
         var ctx = document.getElementById("temperatureChart");
 
-        var data = [
-            { t: new moment().days(-2).minute(1), y: 1 },
-            { t: new moment().minute(2), y: 2 },
-            { t: new moment().minute(3), y: 3 },
-            { t: new moment().minute(4), y: 4 },
-            { t: new moment().minute(5), y: 3 },
-            { t: new moment().minute(60), y: 2 },
+        var dataT = [
+            { t: new moment().minute(1), y: 19 },
+            { t: new moment().minute(2), y: 18.3 },
+            { t: new moment().minute(3), y: 21 },
+            { t: new moment().minute(4), y: 22.5 },
+            { t: new moment().minute(5), y: 20 },
+            { t: new moment().minute(60), y: 19.2 },
+        ]
+
+        var dataH = [
+            { t: new moment().minute(1), y: 69 },
+            { t: new moment().minute(2), y: 75 },
+            { t: new moment().minute(3), y: 78 },
+            { t: new moment().minute(4), y: 82 },
+            { t: new moment().minute(5), y: 72 },
+            { t: new moment().minute(60), y: 65 },
         ]
 
         var config = {
-            type: 'line',
+            type: 'bar',
             data: {
                 datasets: [
                     {
-                        label: "Temperature",
-                        data: data,
+                        label: "Humidity",
+                        data: dataH,
                         fill: false,
-                        borderColor: 'red'
+                        borderColor: colors.blue,
+                        type: 'line',
+                        yAxisID: 'yH',
                     },
                     {
-                        label: "Humidity",
-                        data: data,
+                        label: "Temperature",
+                        data: dataT,
                         fill: true,
-                        backgroundColor: 'blue',
-                        type: 'bar'
-                    }
+                        backgroundColor: colors.red,
+                        yAxisID: 'yT',
+                    },
                 ]
             },
             options: {
@@ -55,7 +71,28 @@
                 scales: {
                     xAxes: [{
                         type: 'time',
-                    }]
+                    }],
+                    yAxes: [
+                        {
+                            id: 'yH',
+                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                            display: true,
+                            position: 'right',
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        },
+                        {
+                            id: 'yT',
+                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                            display: true,
+                            beginAtZero: true,
+                            position: 'left',
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        },
+                    ]
                 }
             }
         };
