@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, json
+from flask import Flask, request, Response, json, render_template
 from influxdb import InfluxDBClient
 import datetime
 
@@ -10,7 +10,7 @@ client.create_database(db_name)
 
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    return render_template("home.html")
 
 @app.route('/api/v1/tempsensor', methods=['POST'])
 def tempsensor_post():
