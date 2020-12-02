@@ -43,66 +43,90 @@
             { t: new moment().days(5).minute(60), y: 65 },
         ]
 
-        var config = {
-            type: 'bar',
-            data: {
-                datasets: [
-                    {
-                        label: "Humidity",
-                        data: dataH,
-                        fill: false,
-                        borderColor: colors.blue,
-                        type: 'line',
-                        yAxisID: 'yH',
-                    },
-                    {
-                        label: "Temperature",
-                        data: dataT,
-                        fill: true,
-                        backgroundColor: colors.red,
-                        yAxisID: 'yT',
-                    },
-                ]
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: "Temperature/Humidity Chart"
-                },
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            unit: 'day',
-                        }
-                    }],
-                    yAxes: [
+        function getChartConfig(dataT, dataH) {
+            var config = {
+                type: 'bar',
+                data: {
+                    datasets: [
                         {
-                            id: 'yH',
-                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                            display: true,
-                            position: 'right',
-                            ticks: {
-                                beginAtZero: true
-                            }
+                            label: "Humidity",
+                            data: dataH,
+                            fill: false,
+                            borderColor: colors.blue,
+                            type: 'line',
+                            yAxisID: 'yH',
                         },
                         {
-                            id: 'yT',
-                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                            display: true,
-                            beginAtZero: true,
-                            position: 'left',
-                            ticks: {
-                                beginAtZero: true
-                            }
+                            label: "Temperature",
+                            data: dataT,
+                            fill: true,
+                            backgroundColor: colors.red,
+                            yAxisID: 'yT',
                         },
                     ]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: "Temperature/Humidity Chart"
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                            }
+                        }],
+                        yAxes: [
+                            {
+                                id: 'yH',
+                                type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                position: 'right',
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            },
+                            {
+                                id: 'yT',
+                                type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                beginAtZero: true,
+                                position: 'left',
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            },
+                        ]
+                    }
                 }
-            }
+            };
+
+            return config;
         };
 
-        var tempChart = new Chart(ctx, config);
+        // var tempChart = new Chart(ctx, getChartConfig(dataT, dataH));
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/api/v1/tempsensor", true);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var json = JSON.parse(this.response);
+
+                var dataT = json.map(function (e) {
+                    return { t: e.time, y: e.temperature };
+                });
+                var dataH = json.map(function (e) {
+                    return { t: e.time, y: e.humidity };
+                });
+
+                var ctx = document.getElementById("temperatureChart");
+                var tempChart = new Chart(ctx, getChartConfig(dataT, dataH));
+            }
+        };
+        xhttp.send();
+
     </script>
 </body>
 
